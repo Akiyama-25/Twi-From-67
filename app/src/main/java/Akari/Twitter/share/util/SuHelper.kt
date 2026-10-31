@@ -2,6 +2,7 @@ package Akari.Twitter.share.util
 
 import android.content.Context
 import android.util.Log
+import Akari.Twitter.share.data.PrefManager
 import java.io.DataOutputStream
 import java.io.File
 
