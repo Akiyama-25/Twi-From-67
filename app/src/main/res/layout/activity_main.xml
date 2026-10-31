@@ -131,7 +131,7 @@
                         app:boxCornerRadiusTopStart="16dp"
                         app:counterEnabled="true"
                         app:counterMaxLength="2"
-                        app:prefixText="?s=">
+                        app:prefixText="\?s=">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editCustomS"
