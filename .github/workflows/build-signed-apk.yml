@@ -32,23 +32,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK Platform 37
+      - name: Setup Android SDK Path
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
-          echo "=== Configuring Android API 37 Platform ==="
-          BASE_PLATFORM=$(find ${ANDROID_HOME}/platforms -maxdepth 1 -name "android-*" | sort -V | tail -n 1)
-          echo "Using base platform: ${BASE_PLATFORM}"
-          mkdir -p "${ANDROID_HOME}/platforms/android-37"
-          cp -r "${BASE_PLATFORM}"/* "${ANDROID_HOME}/platforms/android-37/"
-          {
-            echo "Pkg.Desc=Android SDK Platform 37"
-            echo "Pkg.UserSrc=false"
-            echo "Platform.Version=17"
-            echo "Pkg.Revision=1"
-            echo "AndroidVersion.ApiLevel=37"
-            echo "Pkg.Path=platforms;android-37"
-          } > "${ANDROID_HOME}/platforms/android-37/source.properties"
-          echo "Configured platforms:"
+          echo "=== Pre-installed Platforms ==="
           ls -la "${ANDROID_HOME}/platforms"
 
       - name: Restore Signing Keystore Cache

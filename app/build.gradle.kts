@@ -17,7 +17,7 @@ val releaseKeystore = rootProject.file("release.keystore")
 
 android {
     namespace = "Akari.Twitter.share"
-    compileSdk = 37
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "Akari.Twitter.share"
