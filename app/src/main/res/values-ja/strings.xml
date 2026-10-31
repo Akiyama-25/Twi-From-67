@@ -24,6 +24,12 @@
     <string name="preset_iphone_sys">iPhone 共有シート (12)</string>
     <string name="preset_web_email">Web版 メール共有 (17)</string>
 
+    <!-- Quick SU Actions -->
+    <string name="btn_restart_x">SUでXを再起動</string>
+    <string name="btn_restart_x_desc">Root権限でXのプロセスを強制終了・再起動し、変更を即座に反映します</string>
+    <string name="msg_restart_x_success">SU経由でXを強制終了し再起動しました</string>
+    <string name="err_root_failed">Root権限が取得できないか、実行に失敗しました</string>
+
     <!-- Options -->
     <string name="section_options_title">機能設定</string>
     <string name="switch_enable">フックを有効化</string>

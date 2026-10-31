@@ -23,13 +23,15 @@ import Akari.Twitter.share.hook.TweetUrlModifier
 import Akari.Twitter.share.util.DigitConverter
 import Akari.Twitter.share.util.LocaleHelper
 import Akari.Twitter.share.util.ModuleStatus
+import Akari.Twitter.share.util.SuHelper
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     companion object {
-        const val SAMPLE_TWEET_URL = "https://x.com/zohanlin/status/2116188844500619417?a=ZRipCP_Wn-MjXIXrZpU&s=19"
+        const val SAMPLE_TWEET_URL = "https://x.com/MIT_CSAIL/status/1363172815315214336"
         const val GITHUB_REPO_URL = "https://github.com/Akiyama-25/Twi-From-67"
     }
 
@@ -129,6 +131,26 @@ class MainActivity : AppCompatActivity() {
         // Save Button Handler
         binding.btnSave.setOnClickListener {
             saveConfiguration()
+        }
+
+        // Quick SU Restart X Handler
+        binding.btnRestartX.setOnClickListener {
+            restartXViaSu()
+        }
+    }
+
+    private fun restartXViaSu() {
+        binding.btnRestartX.isEnabled = false
+        thread {
+            val success = SuHelper.restartTwitter(this)
+            runOnUiThread {
+                binding.btnRestartX.isEnabled = true
+                if (success) {
+                    Toast.makeText(this, getString(R.string.msg_restart_x_success), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, getString(R.string.err_root_failed), Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

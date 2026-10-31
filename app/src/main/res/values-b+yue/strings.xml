@@ -24,6 +24,12 @@
     <string name="preset_iphone_sys">iPhone 系統分享 (12)</string>
     <string name="preset_web_email">電腦網頁用 Email 分享 (17)</string>
 
+    <!-- Quick SU Actions -->
+    <string name="btn_restart_x">用 SU 重啟 X（即刻見效）</string>
+    <string name="btn_restart_x_desc">用 Root 權限即刻殺咗 X 嘅進程兼開返佢，等新設定即時見效</string>
+    <string name="msg_restart_x_success">已經用 SU 停咗兼重啟咗 X 啦！</string>
+    <string name="err_root_failed">未攞到 Root 權限或者執行失敗咗</string>
+
     <!-- Options -->
     <string name="section_options_title">功能選項</string>
     <string name="switch_enable">啟用連結攔截</string>

@@ -33,6 +33,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 - **Immersive Edge-to-Edge**: Full screen coverage with proper WindowInsets padding for status bars, navigation bars, display cutouts, and IME.
 - **Multi-language with Hot Reload**: Supports Simplified Chinese (`zh-Hans`), Traditional Chinese (`zh-Hant`), English (`en`), and Japanese (`ja`) with instant in-app hot updating.
 - **Live Test Simulation**: In-app playground to preview URL transformation live and copy results.
+- **Quick Process Restart via SU**: One-tap action to force-stop and relaunch X (Twitter) using root permissions to apply configuration changes immediately.
 - **Automated CI/CD Signing**: Continuous integration workflow inspired by [TsukimiBox](https://github.com/Akiyama-25/TsukimiBox), automatically generating, verifying, and publishing signed APK releases.
 
 ### Installation & Usage
@@ -68,6 +69,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 - **沉浸式全面屏**：完美适配 Edge-to-edge，精准处理状态栏、导航栏、屏幕挖孔与软键盘安全区域。
 - **多语言自由选择与热更新**：内置简体中文（zh-Hans）、繁体中文（zh-Hant）、英语（en）与日语（ja），支持应用内即时无缝热切换。
 - **实时模拟与测试工具**：内置推文链接转换预览框，支持即时预览与一键复制。
+- **通过 SU 一键重启 X 进程**：支持调用 Root 权限快捷强制停止并重新启动 X（Twitter），使新配置无需手动寻找后台即可立即生效。
 - **自动化签名与发布**：参考 [TsukimiBox](https://github.com/Akiyama-25/TsukimiBox)，基于 GitHub Actions 实现持久化 Release 签名密钥生成、校验与自动化发布。
 
 ### 安装与使用
@@ -103,6 +105,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 - **沉浸式全螢幕**：全面支援 Edge-to-edge，自動適配系統狀態列、導覽列及螢幕挖孔。
 - **多語系即時熱更新**：支援簡體中文、繁體中文、英文與日文，切換語言後即時重載無須重啟。
 - **即時模擬測試**：內建貼文連結轉換測試器，隨打即見轉換結果。
+- **透過 SU 一鍵重啟 X 行程**：支援調用 Root 權限快捷強制停止並重新啟動 X（Twitter），使新設定無須手動尋找後台即可即刻生效。
 - **GitHub Actions 自動化簽名發布**：參考 [TsukimiBox](https://github.com/Akiyama-25/TsukimiBox) 工作流程，自動建立並驗證簽名產物。
 
 ---
@@ -131,6 +134,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 - **全面沉浸式全螢幕**：全線支援 Edge-to-edge，貼心避開狀態列、手勢導覽列同埋個相機挖孔。
 - **多語系即時熱更換**：內置簡體中文、繁體中文、粵語（富有粵韻）、英文同埋日文，換完即刻見效，連 App 都唔使重啟。
 - **即場模擬試玩工具**：自帶推文 Link 轉換預覽框，隨手貼 Link 實時睇到轉出嚟係點，仲可以一鍵 Copy。
+- **一掣用 SU 重啟 X（即刻見效）**：支援用 Root 權限即時殺咗 X 嘅背景進程兼自動開返佢，新設定一秒生效，唔使慢慢入系統設定手動強行停止。
 - **GitHub Actions 自動化簽名發布**：參考 [TsukimiBox](https://github.com/Akiyama-25/TsukimiBox) 嘅 CI 工作流，全自動生成持久化 Release 簽名密鑰庫。
 
 ---
@@ -159,6 +163,7 @@ X (Twitter) 12.36+ 以降では、ツイート共有リンクにクライアン�
 - **エッジ・ツー・エッジ (全画面没入型)**：ステータスバー・ナビゲーションバーの余白を完璧に処理。
 - **多言語対応 & ホットリロード**：簡体中国語、繁体中国語、英語、日本語をサポート。再起動不要で即座に切り替え可能。
 - **リアルタイムシミュレーション**：アプリ内で変換前後のURLを即座に確認・コピー可能。
+- **SUによるXプロセス即時再起動**：Root権限を利用してX（Twitter）のプロセスをワンタップで強制終了・自動再起動し、設定変更を即座に反映可能。
 - **CI/CD 自動ビルド & 署名**：[TsukimiBox](https://github.com/Akiyama-25/TsukimiBox) を参考にした堅牢な自動署名パイプライン。
 
 ---

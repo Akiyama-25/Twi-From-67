@@ -3,7 +3,9 @@ package Akari.Twitter.share.data
 import android.content.Context
 import android.content.SharedPreferences
 import Akari.Twitter.share.util.DigitConverter
+import Akari.Twitter.share.util.SuHelper
 import java.io.File
+import kotlin.concurrent.thread
 
 object PrefManager {
 
@@ -49,6 +51,7 @@ object PrefManager {
         } catch (_: Throwable) {}
 
         makeWorldReadable(context)
+        asyncRootSync(context)
     }
 
     fun isEnabled(context: Context): Boolean {
@@ -68,6 +71,7 @@ object PrefManager {
         } catch (_: Throwable) {}
 
         makeWorldReadable(context)
+        asyncRootSync(context)
     }
 
     fun isCleanTracking(context: Context): Boolean {
@@ -87,6 +91,7 @@ object PrefManager {
         } catch (_: Throwable) {}
 
         makeWorldReadable(context)
+        asyncRootSync(context)
     }
 
     fun getLanguage(context: Context): String {
@@ -97,6 +102,19 @@ object PrefManager {
     fun setLanguage(context: Context, langCode: String) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit().putString(KEY_LANGUAGE, langCode).apply()
+    }
+
+    private fun asyncRootSync(context: Context) {
+        thread(isDaemon = true) {
+            try {
+                SuHelper.syncConfig(
+                    context,
+                    getCustomS(context),
+                    isEnabled(context),
+                    isCleanTracking(context)
+                )
+            } catch (_: Throwable) {}
+        }
     }
 
     private fun makeWorldReadable(context: Context) {

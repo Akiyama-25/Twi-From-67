@@ -24,6 +24,12 @@
     <string name="preset_iphone_sys">iPhone System (12)</string>
     <string name="preset_web_email">Web Email (17)</string>
 
+    <!-- Quick SU Actions -->
+    <string name="btn_restart_x">Restart X (via SU)</string>
+    <string name="btn_restart_x_desc">Force-stop X process via SU and relaunch to apply changes immediately</string>
+    <string name="msg_restart_x_success">X has been stopped and relaunched successfully</string>
+    <string name="err_root_failed">Root permission not available or execution failed</string>
+
     <!-- Options -->
     <string name="section_options_title">Options</string>
     <string name="switch_enable">Enable Hook</string>
