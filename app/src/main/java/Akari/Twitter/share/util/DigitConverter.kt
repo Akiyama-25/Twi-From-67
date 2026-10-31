@@ -9,9 +9,9 @@ object DigitConverter {
     /**
      * Converts full-width digits (０-９, U+FF10..U+FF19) to half-width Arabic numerals (0-9).
      * Filters out any non-numeric characters.
-     * Restricts output to at most 2 digits.
+     * No upper limit on length.
      */
-    fun sanitizeToTwoDigits(input: CharSequence?): String {
+    fun sanitizeDigits(input: CharSequence?): String {
         if (input.isNullOrEmpty()) return ""
         val sb = StringBuilder()
         for (i in 0 until input.length) {
@@ -24,15 +24,18 @@ object DigitConverter {
                     sb.append(ch)
                 }
             }
-            if (sb.length == 2) break
         }
         return sb.toString()
     }
 
     /**
-     * Validates whether input contains 1 or 2 Arabic digits.
+     * Validates whether input contains 1 or more Arabic digits.
      */
-    fun isValidTwoDigits(input: String): Boolean {
-        return input.isNotEmpty() && input.length <= 2 && input.all { it in '0'..'9' }
+    fun isValidDigits(input: String): Boolean {
+        return input.isNotEmpty() && input.all { it in '0'..'9' }
     }
+
+    // Backward compatibility aliases
+    fun sanitizeToTwoDigits(input: CharSequence?): String = sanitizeDigits(input)
+    fun isValidTwoDigits(input: String): Boolean = isValidDigits(input)
 }

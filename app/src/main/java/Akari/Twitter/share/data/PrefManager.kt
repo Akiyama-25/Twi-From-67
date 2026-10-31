@@ -13,19 +13,41 @@ object PrefManager {
     const val KEY_CLEAN_TRACKING = "clean_tracking"
     const val KEY_LANGUAGE = "language"
 
+    /**
+     * Retrieve shared preferences.
+     * Attempts Context.MODE_WORLD_READABLE first so LSPosed's xposedsharedprefs hook
+     * can redirect and expose the preference file across app boundaries.
+     */
+    @Suppress("DEPRECATION")
     fun getPrefs(context: Context): SharedPreferences {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return try {
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_READABLE)
+        } catch (_: Throwable) {
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        }
     }
 
     fun getCustomS(context: Context): String {
         val s = getPrefs(context).getString(KEY_CUSTOM_S, DigitConverter.DEFAULT_S)
-        return if (!s.isNullOrEmpty() && DigitConverter.isValidTwoDigits(s)) s else DigitConverter.DEFAULT_S
+        return if (!s.isNullOrEmpty() && DigitConverter.isValidDigits(s)) s else DigitConverter.DEFAULT_S
     }
 
     fun setCustomS(context: Context, value: String) {
-        val sanitized = DigitConverter.sanitizeToTwoDigits(value)
+        val sanitized = DigitConverter.sanitizeDigits(value)
         val finalVal = if (sanitized.isNotEmpty()) sanitized else DigitConverter.DEFAULT_S
-        getPrefs(context).edit().putString(KEY_CUSTOM_S, finalVal).apply()
+
+        // Write synchronously via commit() to both WORLD_READABLE and PRIVATE
+        try {
+            @Suppress("DEPRECATION")
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_READABLE)
+                .edit().putString(KEY_CUSTOM_S, finalVal).commit()
+        } catch (_: Throwable) {}
+
+        try {
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit().putString(KEY_CUSTOM_S, finalVal).commit()
+        } catch (_: Throwable) {}
+
         makeWorldReadable(context)
     }
 
@@ -34,7 +56,17 @@ object PrefManager {
     }
 
     fun setEnabled(context: Context, enabled: Boolean) {
-        getPrefs(context).edit().putBoolean(KEY_IS_ENABLED, enabled).apply()
+        try {
+            @Suppress("DEPRECATION")
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_READABLE)
+                .edit().putBoolean(KEY_IS_ENABLED, enabled).commit()
+        } catch (_: Throwable) {}
+
+        try {
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit().putBoolean(KEY_IS_ENABLED, enabled).commit()
+        } catch (_: Throwable) {}
+
         makeWorldReadable(context)
     }
 
@@ -43,34 +75,45 @@ object PrefManager {
     }
 
     fun setCleanTracking(context: Context, clean: Boolean) {
-        getPrefs(context).edit().putBoolean(KEY_CLEAN_TRACKING, clean).apply()
+        try {
+            @Suppress("DEPRECATION")
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_READABLE)
+                .edit().putBoolean(KEY_CLEAN_TRACKING, clean).commit()
+        } catch (_: Throwable) {}
+
+        try {
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit().putBoolean(KEY_CLEAN_TRACKING, clean).commit()
+        } catch (_: Throwable) {}
+
         makeWorldReadable(context)
     }
 
     fun getLanguage(context: Context): String {
-        return getPrefs(context).getString(KEY_LANGUAGE, "system") ?: "system"
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getString(KEY_LANGUAGE, "system") ?: "system"
     }
 
     fun setLanguage(context: Context, langCode: String) {
-        getPrefs(context).edit().putString(KEY_LANGUAGE, langCode).apply()
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit().putString(KEY_LANGUAGE, langCode).apply()
     }
 
     private fun makeWorldReadable(context: Context) {
         try {
-            val parent = context.filesDir.parentFile ?: return
-            val sharedPrefsDir = File(parent, "shared_prefs")
-            val prefsFile = File(sharedPrefsDir, "$PREFS_NAME.xml")
-            if (parent.exists()) {
-                parent.setReadable(true, false)
-                parent.setExecutable(true, false)
-            }
-            if (sharedPrefsDir.exists()) {
-                sharedPrefsDir.setReadable(true, false)
-                sharedPrefsDir.setExecutable(true, false)
-            }
+            val dataDir = context.applicationInfo.dataDir
+            val prefsDir = File(dataDir, "shared_prefs")
+            val prefsFile = File(prefsDir, "$PREFS_NAME.xml")
             if (prefsFile.exists()) {
                 prefsFile.setReadable(true, false)
+                prefsFile.setWritable(true, false)
             }
+            if (prefsDir.exists()) {
+                prefsDir.setReadable(true, false)
+                prefsDir.setExecutable(true, false)
+            }
+            File(dataDir).setReadable(true, false)
+            File(dataDir).setExecutable(true, false)
         } catch (_: Throwable) {
             // Ignore security exceptions on locked environments
         }

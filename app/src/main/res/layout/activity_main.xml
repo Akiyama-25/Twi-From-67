@@ -129,8 +129,6 @@
                         app:boxCornerRadiusBottomStart="16dp"
                         app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="2"
                         app:prefixText="\?s=">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -138,7 +136,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
-                            android:maxLength="2"
                             android:singleLine="true"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />
 

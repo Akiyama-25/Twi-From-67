@@ -16,6 +16,7 @@ import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
+import java.io.File
 
 class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit {
 
@@ -29,19 +30,26 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit {
         private var xSharedPreferences: XSharedPreferences? = null
 
         fun getXPreferences(): XSharedPreferences {
-            val pref = xSharedPreferences ?: XSharedPreferences(MODULE_PKG, PREFS_NAME).apply {
-                makeWorldReadable()
-                reload()
-            }
+            val pref = xSharedPreferences ?: XSharedPreferences(MODULE_PKG, PREFS_NAME)
             xSharedPreferences = pref
             return pref
+        }
+
+        fun getApplicationContext(): Context? {
+            return try {
+                val activityThreadClass = Class.forName("android.app.ActivityThread")
+                val currentApplication = activityThreadClass.getDeclaredMethod("currentApplication")
+                currentApplication.isAccessible = true
+                currentApplication.invoke(null) as? Context
+            } catch (_: Throwable) {
+                null
+            }
         }
     }
 
     override fun initZygote(startupParam: IXposedHookZygoteInit.StartupParam?) {
         try {
             xSharedPreferences = XSharedPreferences(MODULE_PKG, PREFS_NAME)
-            xSharedPreferences?.makeWorldReadable()
         } catch (t: Throwable) {
             XposedBridge.log("[$TAG] Zygote init prefs exception: ${t.message}")
         }
@@ -277,35 +285,70 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit {
     )
 
     private fun loadConfig(context: Context?): HookConfig {
-        // Priority 1: XSharedPreferences
+        // Priority 1: LSPosed XSharedPreferences
         try {
             val pref = getXPreferences()
             pref.reload()
-            val customS = pref.getString("custom_s", "67") ?: "67"
-            val isEnabled = pref.getBoolean("is_enabled", true)
-            val cleanTracking = pref.getBoolean("clean_tracking", false)
-            return HookConfig(isEnabled, customS, cleanTracking)
-        } catch (_: Throwable) {
-            // fallback
+            val customS = pref.getString("custom_s", null)
+            if (!customS.isNullOrEmpty()) {
+                val isEnabled = pref.getBoolean("is_enabled", true)
+                val cleanTracking = pref.getBoolean("clean_tracking", false)
+                XposedBridge.log("[$TAG] Loaded config from XSharedPreferences: customS=$customS")
+                return HookConfig(isEnabled, customS, cleanTracking)
+            }
+        } catch (t: Throwable) {
+            XposedBridge.log("[$TAG] XSharedPreferences error: ${t.message}")
         }
 
-        // Priority 2: Remote ContentProvider query
-        if (context != null) {
+        // Priority 2: Direct file fallback via XSharedPreferences(File)
+        try {
+            val directFile = File("/data/data/$MODULE_PKG/shared_prefs/$PREFS_NAME.xml")
+            if (directFile.exists() && directFile.canRead()) {
+                val filePref = XSharedPreferences(directFile)
+                filePref.reload()
+                val customS = filePref.getString("custom_s", null)
+                if (!customS.isNullOrEmpty()) {
+                    val isEnabled = filePref.getBoolean("is_enabled", true)
+                    val cleanTracking = filePref.getBoolean("clean_tracking", false)
+                    XposedBridge.log("[$TAG] Loaded config from direct file: customS=$customS")
+                    return HookConfig(isEnabled, customS, cleanTracking)
+                }
+            }
+        } catch (_: Throwable) {}
+
+        // Priority 3: Direct XML parsing
+        try {
+            val xmlFile = File("/data/data/$MODULE_PKG/shared_prefs/$PREFS_NAME.xml")
+            if (xmlFile.exists() && xmlFile.canRead()) {
+                val text = xmlFile.readText()
+                val match = Regex("<string name=\"custom_s\">(.*?)</string>").find(text)
+                if (match != null) {
+                    val customS = match.groupValues[1]
+                    val isEnabled = !text.contains("<boolean name=\"is_enabled\" value=\"false\"")
+                    val cleanTracking = text.contains("<boolean name=\"clean_tracking\" value=\"true\"")
+                    XposedBridge.log("[$TAG] Loaded config from XML parsing: customS=$customS")
+                    return HookConfig(isEnabled, customS, cleanTracking)
+                }
+            }
+        } catch (_: Throwable) {}
+
+        // Priority 4: ContentProvider query
+        val effectiveContext = context ?: getApplicationContext()
+        if (effectiveContext != null) {
             try {
                 val uri = Uri.parse("content://Akari.Twitter.share.provider/config")
-                val bundle = context.contentResolver.call(uri, "getConfig", null, null)
-                if (bundle != null) {
+                val bundle = effectiveContext.contentResolver.call(uri, "getConfig", null, null)
+                if (bundle != null && bundle.containsKey("custom_s")) {
                     val customS = bundle.getString("custom_s", "67") ?: "67"
                     val isEnabled = bundle.getBoolean("is_enabled", true)
                     val cleanTracking = bundle.getBoolean("clean_tracking", false)
+                    XposedBridge.log("[$TAG] Loaded config from ContentProvider: customS=$customS")
                     return HookConfig(isEnabled, customS, cleanTracking)
                 }
-            } catch (_: Throwable) {
-                // Ignore
-            }
+            } catch (_: Throwable) {}
         }
 
-        // Priority 3: Default fallback
+        // Priority 5: Default fallback
         return HookConfig(true, "67", false)
     }
 }

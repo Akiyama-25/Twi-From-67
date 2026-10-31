@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupParameterControls() {
-        // Full-width to half-width auto-conversion & digits-only input filter
+        // Full-width to half-width auto-conversion & digits-only input filter (no length limit)
         val digitFilter = InputFilter { source, start, end, _, _, _ ->
             val sb = StringBuilder()
             for (i in start until end) {
@@ -97,11 +97,18 @@ class MainActivity : AppCompatActivity() {
             sb.toString()
         }
 
-        binding.editCustomS.filters = arrayOf(digitFilter, InputFilter.LengthFilter(2))
+        binding.editCustomS.filters = arrayOf(digitFilter)
 
         val currentVal = PrefManager.getCustomS(this)
         binding.editCustomS.setText(currentVal)
         highlightMatchingChip(currentVal)
+
+        binding.editCustomS.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && binding.editCustomS.text.isNullOrBlank()) {
+                binding.editCustomS.setText(DigitConverter.DEFAULT_S)
+                binding.editCustomS.setSelection(DigitConverter.DEFAULT_S.length)
+            }
+        }
 
         binding.editCustomS.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -142,22 +149,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveConfiguration() {
-        val rawInput = binding.editCustomS.text?.toString() ?: ""
-        val sanitized = DigitConverter.sanitizeToTwoDigits(rawInput)
+        val rawInput = binding.editCustomS.text?.toString()?.trim() ?: ""
+        val sanitized = DigitConverter.sanitizeDigits(rawInput)
 
-        if (!DigitConverter.isValidTwoDigits(sanitized)) {
-            binding.layoutCustomS.error = getString(R.string.err_invalid_number)
-            Toast.makeText(this, getString(R.string.err_invalid_number), Toast.LENGTH_SHORT).show()
-            return
+        val finalVal = if (sanitized.isEmpty()) {
+            binding.editCustomS.setText(DigitConverter.DEFAULT_S)
+            binding.editCustomS.setSelection(DigitConverter.DEFAULT_S.length)
+            DigitConverter.DEFAULT_S
+        } else {
+            if (sanitized != rawInput) {
+                binding.editCustomS.setText(sanitized)
+                binding.editCustomS.setSelection(sanitized.length)
+            }
+            sanitized
         }
+
         binding.layoutCustomS.error = null
 
-        PrefManager.setCustomS(this, sanitized)
-        highlightMatchingChip(sanitized)
+        PrefManager.setCustomS(this, finalVal)
+        highlightMatchingChip(finalVal)
 
         // Secret Easter Egg Requirement:
         // When user enters 67 and saves, show Toast "67676767".
-        if (sanitized == DigitConverter.EASTER_EGG_VALUE) {
+        if (finalVal == DigitConverter.EASTER_EGG_VALUE) {
             Toast.makeText(this, DigitConverter.EASTER_EGG_TOAST, Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, getString(R.string.msg_saved_success), Toast.LENGTH_SHORT).show()
@@ -210,7 +224,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateLiveTestPreview() {
         val inputUrl = binding.editTestUrl.text?.toString() ?: ""
-        val targetS = binding.editCustomS.text?.toString()?.ifBlank { "67" } ?: "67"
+        val targetS = binding.editCustomS.text?.toString()?.ifBlank { DigitConverter.DEFAULT_S } ?: DigitConverter.DEFAULT_S
         val cleanTracking = binding.switchCleanTracking.isChecked
 
         val rewritten = TweetUrlModifier.modify(inputUrl, targetS, cleanTracking)

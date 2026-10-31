@@ -10,10 +10,10 @@
     <!-- Parameter Config -->
     <string name="section_param_title">Share Source Parameter (?s=)</string>
     <string name="section_param_desc">Customize the source identification number appended to tweet share links</string>
-    <string name="hint_custom_s">1-2 digits (e.g. 67, 19, 46)</string>
+    <string name="hint_custom_s">Arabic digits (e.g. 67, 19, 46, leave empty for 67)</string>
     <string name="btn_save">Save Settings</string>
     <string name="msg_saved_success">Settings saved successfully</string>
-    <string name="err_invalid_number">Please enter a valid 1 or 2 digit Arabic number</string>
+    <string name="err_invalid_number">Please enter valid Arabic digits</string>
 
     <!-- Presets -->
     <string name="presets_title">Quick Presets</string>

@@ -9,36 +9,36 @@ import org.junit.Test
 class DigitConverterTest {
 
     @Test
-    fun testHalfWidthDigits() {
-        assertEquals("67", DigitConverter.sanitizeToTwoDigits("67"))
-        assertEquals("19", DigitConverter.sanitizeToTwoDigits("19"))
-        assertEquals("1", DigitConverter.sanitizeToTwoDigits("1"))
-        assertEquals("12", DigitConverter.sanitizeToTwoDigits("123"))
+    fun testHalfWidthDigitsWithoutLengthLimit() {
+        assertEquals("67", DigitConverter.sanitizeDigits("67"))
+        assertEquals("19", DigitConverter.sanitizeDigits("19"))
+        assertEquals("1", DigitConverter.sanitizeDigits("1"))
+        assertEquals("1234567890", DigitConverter.sanitizeDigits("1234567890"))
     }
 
     @Test
     fun testFullWidthDigits() {
-        assertEquals("67", DigitConverter.sanitizeToTwoDigits("６７"))
-        assertEquals("19", DigitConverter.sanitizeToTwoDigits("１９"))
-        assertEquals("0", DigitConverter.sanitizeToTwoDigits("０"))
-        assertEquals("46", DigitConverter.sanitizeToTwoDigits("４６"))
-        assertEquals("12", DigitConverter.sanitizeToTwoDigits("１２３"))
+        assertEquals("67", DigitConverter.sanitizeDigits("６７"))
+        assertEquals("19", DigitConverter.sanitizeDigits("１９"))
+        assertEquals("0", DigitConverter.sanitizeDigits("０"))
+        assertEquals("46", DigitConverter.sanitizeDigits("４６"))
+        assertEquals("123456", DigitConverter.sanitizeDigits("１２３４５６"))
     }
 
     @Test
     fun testMixedAndFilteredCharacters() {
-        assertEquals("67", DigitConverter.sanitizeToTwoDigits("abc６7xyz"))
-        assertEquals("19", DigitConverter.sanitizeToTwoDigits("?s=19"))
-        assertEquals("", DigitConverter.sanitizeToTwoDigits("abc"))
+        assertEquals("678", DigitConverter.sanitizeDigits("abc６78xyz"))
+        assertEquals("19", DigitConverter.sanitizeDigits("?s=19"))
+        assertEquals("", DigitConverter.sanitizeDigits("abc"))
     }
 
     @Test
     fun testValidation() {
-        assertTrue(DigitConverter.isValidTwoDigits("67"))
-        assertTrue(DigitConverter.isValidTwoDigits("19"))
-        assertTrue(DigitConverter.isValidTwoDigits("0"))
-        assertFalse(DigitConverter.isValidTwoDigits(""))
-        assertFalse(DigitConverter.isValidTwoDigits("123"))
-        assertFalse(DigitConverter.isValidTwoDigits("6a"))
+        assertTrue(DigitConverter.isValidDigits("67"))
+        assertTrue(DigitConverter.isValidDigits("19"))
+        assertTrue(DigitConverter.isValidDigits("0"))
+        assertTrue(DigitConverter.isValidDigits("12345678901234567890"))
+        assertFalse(DigitConverter.isValidDigits(""))
+        assertFalse(DigitConverter.isValidDigits("6a"))
     }
 }

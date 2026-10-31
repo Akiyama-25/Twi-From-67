@@ -10,10 +10,10 @@
     <!-- Parameter Config -->
     <string name="section_param_title">共有元パラメータ (?s=)</string>
     <string name="section_param_desc">ツイート共有リンクの末尾に追加される共有元識別数値を設定します</string>
-    <string name="hint_custom_s">1〜2桁のアラビア数字（例：67, 19, 46）</string>
+    <string name="hint_custom_s">アラビア数字（例：67, 19, 46、空欄時は67）</string>
     <string name="btn_save">設定を保存</string>
     <string name="msg_saved_success">設定を保存しました</string>
-    <string name="err_invalid_number">有効な1〜2桁のアラビア数字を入力してください</string>
+    <string name="err_invalid_number">有効なアラビア数字を入力してください</string>
 
     <!-- Presets -->
     <string name="presets_title">クイックプリセット</string>

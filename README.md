@@ -18,7 +18,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 
 ### Features
 - **Custom Share Source**: Modify the numeric value of `?s=` attached to tweet URLs.
-- **Input Sanitization**: Accepts up to 2 Arabic digits, automatically converting full-width numbers (`０`–`９`) to standard half-width numerals (`0`–`9`).
+- **Input Sanitization**: Accepts Arabic digits of any length, automatically converting full-width numbers (`０`–`９`) to standard half-width numerals (`0`–`9`).
 - **Quick Presets**: One-tap selection for known platform source identifiers:
   - `46`: iPhone X App
   - `19`: Android App
@@ -53,7 +53,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 
 ### 特性亮点
 - **自定义分享来源**：自由指定推文链接中 `?s=` 后的数字代码。
-- **智能输入校验**：数值最大输入两位数且仅允许阿拉伯数字，全角数字（`０`–`９`）自动转换为半角数字（`0`–`9`）。
+- **智能输入校验**：仅允许输入阿拉伯数字（无长度上限），全角数字（`０`–`９`）自动转换为半角数字（`0`–`9`）。
 - **常见来源快捷预设**：
   - `46`：iPhone 上的 X App
   - `19`：Android 端
@@ -88,7 +88,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 
 ### 核心特色
 - **自訂分享來源代碼**：任意修改推文連結末端的 `?s=` 數字。
-- **智慧輸入轉換**：最多輸入兩位數且僅限阿拉伯數字，全形數字（`０`–`９`）自動轉換為半形數字（`0`–`9`）。
+- **智慧輸入轉換**：僅限輸入阿拉伯數字（無長度上限），全形數字（`０`–`９`）自動轉換為半形數字（`0`–`9`）。
 - **常見裝置快捷預設**：
   - `46`：iPhone 上的 X App
   - `19`：Android 裝置
@@ -116,7 +116,7 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 
 ### 核心正嘢
 - **隨心自定分享來源代碼**：想改乜數字就改乜數字，完全聽你指揮。
-- **智能防呆與全形轉換**：最多只准入兩位數字，兼且只認阿拉伯數字；就算手快入咗全形數字（`０`–`９`），都會自動幫你變返正經半形（`0`–`9`）。
+- **智能防呆與全形轉換**：淨係認阿拉伯數字（無長度限制）；就算手快入咗全形數字（`０`–`９`），都會自動幫你變返正經半形（`0`–`9`）。
 - **常見裝置即揀即用（快捷預設）**：
   - `46`：iPhone 版 X App
   - `19`：Android 友
@@ -144,7 +144,7 @@ X (Twitter) 12.36+ 以降では、ツイート共有リンクにクライアン�
 
 ### 主な機能
 - **共有元パラメータのカスタマイズ**：`?s=` に付加される数値を自由に設定。
-- **全角・半角自動変換 & 入力制限**：最大2桁のアラビア数字のみ入力可能。全角数字（`０`〜`９`）は自動で半角（`0`〜`9`）に変換。
+- **全角・半角自動変換 & 入力制御**：アラビア数字のみ入力可能（桁数上限なし）。全角数字（`０`〜`９`）は自動で半角（`0`〜`9`）に変換。
 - **クイックプリセット一覧**：
   - `46`：iPhone 版 X App
   - `19`：Android 版 X App

@@ -10,10 +10,10 @@
     <!-- Parameter Config -->
     <string name="section_param_title">分享來源參數 (?s=)</string>
     <string name="section_param_desc">自己話事！自定貼文分享 Link 尾尾追加嘅來源識別數字</string>
-    <string name="hint_custom_s">1-2 位阿拉伯數字（例如 67、19、46）</string>
+    <string name="hint_custom_s">阿拉伯數字（例如 67、19、46，留空預設填 67）</string>
     <string name="btn_save">儲存設定（搞掂）</string>
     <string name="msg_saved_success">設定已經儲存好晒啦！</string>
-    <string name="err_invalid_number">咪亂入啦，請輸入 1-2 位正經嘅阿拉伯數字</string>
+    <string name="err_invalid_number">咪亂入啦，請輸入正經嘅阿拉伯數字</string>
 
     <!-- Presets -->
     <string name="presets_title">快捷預設（即揀即用）</string>

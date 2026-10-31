@@ -10,10 +10,10 @@
     <!-- Parameter Config -->
     <string name="section_param_title">分享來源參數 (?s=)</string>
     <string name="section_param_desc">自訂推文分享連結末尾追加的來源識別代號（數字）</string>
-    <string name="hint_custom_s">1-2 位阿拉伯數字（如 67、19、46）</string>
+    <string name="hint_custom_s">阿拉伯數字（如 67、19、46，留空預設為 67）</string>
     <string name="btn_save">儲存設定</string>
     <string name="msg_saved_success">設定已儲存</string>
-    <string name="err_invalid_number">請輸入有效的 1-2 位阿拉伯數字</string>
+    <string name="err_invalid_number">請輸入有效的阿拉伯數字</string>
 
     <!-- Presets -->
     <string name="presets_title">快捷預設</string>
