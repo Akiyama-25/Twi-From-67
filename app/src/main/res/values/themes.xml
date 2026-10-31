@@ -12,7 +12,6 @@
         <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.TwiFrom67.ExtraLarge</item>
         <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.TwiFrom67.Large</item>
         <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.TwiFrom67.Medium</item>
-        <item name="shapeAppearanceCornerFull">@style/ShapeAppearance.TwiFrom67.Full</item>
     </style>
 
     <style name="ShapeAppearance.TwiFrom67.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge">

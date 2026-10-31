@@ -29,7 +29,7 @@
     <string name="switch_enable">フックを有効化</string>
     <string name="switch_enable_desc">X内のクリップボードコピーおよび共有Intentを傍受して?s=を書き換えます</string>
     <string name="switch_clean">余分な追跡パラメータを削除</string>
-    <string name="switch_clean_desc">?a= などの識別トラッキングパラメータを除去し、クリーンなリンクを維持します</string>
+    <string name="switch_clean_desc">\?a= などの識別トラッキングパラメータを除去し、クリーンなリンクを維持します</string>
 
     <!-- Live Test -->
     <string name="section_test_title">リアルタイムプレビュー &amp; テスト</string>
