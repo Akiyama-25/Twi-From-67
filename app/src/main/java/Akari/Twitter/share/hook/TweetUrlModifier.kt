@@ -5,6 +5,8 @@ import java.util.regex.Pattern
 
 object TweetUrlModifier {
 
+    val isRewriting = ThreadLocal<Boolean>()
+
     // Matches tweet/status URLs from x.com or twitter.com
     private val TWEET_URL_REGEX = Pattern.compile(
         "https?://(?:www\\.)?(?:x|twitter)\\.com/[A-Za-z0-9_]+/status/[0-9]+(?:\\?[^\\s\"'<>]*)?",
@@ -25,13 +27,18 @@ object TweetUrlModifier {
         val matcher = TWEET_URL_REGEX.matcher(originalText)
         val sb = StringBuffer()
 
-        while (matcher.find()) {
-            val matchedUrl = matcher.group(0)
-            val rewritten = rewriteSingleUrl(matchedUrl, effectiveS, cleanTracking)
-            matcher.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement(rewritten))
+        isRewriting.set(true)
+        try {
+            while (matcher.find()) {
+                val matchedUrl = matcher.group(0)
+                val rewritten = rewriteSingleUrl(matchedUrl, effectiveS, cleanTracking)
+                matcher.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement(rewritten))
+            }
+            matcher.appendTail(sb)
+            return sb.toString()
+        } finally {
+            isRewriting.set(false)
         }
-        matcher.appendTail(sb)
-        return sb.toString()
     }
 
     private fun rewriteSingleUrl(rawUrl: String, targetS: String, cleanTracking: Boolean): String {

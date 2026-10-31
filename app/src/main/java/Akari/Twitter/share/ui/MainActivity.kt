@@ -140,9 +140,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun restartXViaSu() {
+        saveConfiguration()
         binding.btnRestartX.isEnabled = false
+        val currentVal = PrefManager.getCustomS(this)
         thread {
-            val success = SuHelper.restartTwitter(this)
+            val success = SuHelper.restartTwitter(this, currentVal)
             runOnUiThread {
                 binding.btnRestartX.isEnabled = true
                 if (success) {
