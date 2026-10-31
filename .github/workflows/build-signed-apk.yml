@@ -40,14 +40,14 @@ jobs:
           echo "Using base platform: ${BASE_PLATFORM}"
           mkdir -p "${ANDROID_HOME}/platforms/android-37"
           cp -r "${BASE_PLATFORM}"/* "${ANDROID_HOME}/platforms/android-37/"
-          cat << 'EOF' > "${ANDROID_HOME}/platforms/android-37/source.properties"
-Pkg.Desc=Android SDK Platform 37
-Pkg.UserSrc=false
-Platform.Version=17
-Pkg.Revision=1
-AndroidVersion.ApiLevel=37
-Pkg.Path=platforms;android-37
-EOF
+          {
+            echo "Pkg.Desc=Android SDK Platform 37"
+            echo "Pkg.UserSrc=false"
+            echo "Platform.Version=17"
+            echo "Pkg.Revision=1"
+            echo "AndroidVersion.ApiLevel=37"
+            echo "Pkg.Path=platforms;android-37"
+          } > "${ANDROID_HOME}/platforms/android-37/source.properties"
           echo "Configured platforms:"
           ls -la "${ANDROID_HOME}/platforms"
 
