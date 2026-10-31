@@ -12,6 +12,7 @@ object SuHelper {
     const val TWITTER_PKG = "com.twitter.android"
     const val TWITTER_LITE_PKG = "com.twitter.android.lite"
     const val MODULE_PKG = "Akari.Twitter.share"
+    const val ACTION_UPDATE_CONFIG = "Akari.Twitter.share.ACTION_UPDATE_CONFIG"
 
     /**
      * Executes shell commands as root (su).
@@ -53,6 +54,7 @@ object SuHelper {
      * Synchronizes configuration files directly into Twitter's data directories
      * with matching permissions, ownership and SELinux contexts (chcon/restorecon)
      * so Twitter's untrusted_app domain can access it without restriction.
+     * Writes both a simple single-value file (custom_s.txt) and a JSON config.
      */
     fun syncConfig(
         context: Context,
@@ -71,30 +73,37 @@ object SuHelper {
         cmds.add("chmod 666 $moduleDataDir/shared_prefs/* 2>/dev/null || true")
         cmds.add("restorecon -R $moduleDataDir 2>/dev/null || true")
 
-        // 2. Direct write into Twitter package's files directory
-        cmds.add("mkdir -p /data/data/$TWITTER_PKG/files 2>/dev/null || true")
-        cmds.add("mkdir -p /data/user/0/$TWITTER_PKG/files 2>/dev/null || true")
-        cmds.add("echo '$jsonPayload' > /data/data/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("chmod 666 /data/data/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("chown --reference=/data/data/$TWITTER_PKG/files /data/data/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("chcon --reference=/data/data/$TWITTER_PKG/files /data/data/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("restorecon /data/data/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
+        // 2. Direct write into Twitter package's files directory (both JSON and plain text number)
+        for (baseDir in listOf("/data/data/$TWITTER_PKG", "/data/user/0/$TWITTER_PKG")) {
+            cmds.add("mkdir -p $baseDir/files 2>/dev/null || true")
+            // Plain text number file
+            cmds.add("echo -n '$customS' > $baseDir/files/custom_s.txt 2>/dev/null || true")
+            cmds.add("chmod 666 $baseDir/files/custom_s.txt 2>/dev/null || true")
+            cmds.add("chown --reference=$baseDir/files $baseDir/files/custom_s.txt 2>/dev/null || true")
+            cmds.add("chcon --reference=$baseDir/files $baseDir/files/custom_s.txt 2>/dev/null || true")
+            cmds.add("restorecon $baseDir/files/custom_s.txt 2>/dev/null || true")
 
-        // Also duplicate to /data/user/0
-        cmds.add("cp -f /data/data/$TWITTER_PKG/files/twi_from_67.json /data/user/0/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("chmod 666 /data/user/0/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("chown --reference=/data/user/0/$TWITTER_PKG/files /data/user/0/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("chcon --reference=/data/user/0/$TWITTER_PKG/files /data/user/0/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
-        cmds.add("restorecon /data/user/0/$TWITTER_PKG/files/twi_from_67.json 2>/dev/null || true")
+            // JSON file
+            cmds.add("echo '$jsonPayload' > $baseDir/files/twi_from_67.json 2>/dev/null || true")
+            cmds.add("chmod 666 $baseDir/files/twi_from_67.json 2>/dev/null || true")
+            cmds.add("chown --reference=$baseDir/files $baseDir/files/twi_from_67.json 2>/dev/null || true")
+            cmds.add("chcon --reference=$baseDir/files $baseDir/files/twi_from_67.json 2>/dev/null || true")
+            cmds.add("restorecon $baseDir/files/twi_from_67.json 2>/dev/null || true")
+        }
 
         // 3. Twitter Lite if present
-        cmds.add("if [ -d /data/data/$TWITTER_LITE_PKG ]; then " +
-                "mkdir -p /data/data/$TWITTER_LITE_PKG/files && " +
-                "echo '$jsonPayload' > /data/data/$TWITTER_LITE_PKG/files/twi_from_67.json && " +
-                "chmod 666 /data/data/$TWITTER_LITE_PKG/files/twi_from_67.json && " +
-                "chown --reference=/data/data/$TWITTER_LITE_PKG/files /data/data/$TWITTER_LITE_PKG/files/twi_from_67.json && " +
-                "chcon --reference=/data/data/$TWITTER_LITE_PKG/files /data/data/$TWITTER_LITE_PKG/files/twi_from_67.json && " +
-                "restorecon /data/data/$TWITTER_LITE_PKG/files/twi_from_67.json 2>/dev/null; fi")
+        for (baseDir in listOf("/data/data/$TWITTER_LITE_PKG", "/data/user/0/$TWITTER_LITE_PKG")) {
+            cmds.add("if [ -d $baseDir ]; then " +
+                    "mkdir -p $baseDir/files && " +
+                    "echo -n '$customS' > $baseDir/files/custom_s.txt && " +
+                    "chmod 666 $baseDir/files/custom_s.txt && " +
+                    "echo '$jsonPayload' > $baseDir/files/twi_from_67.json && " +
+                    "chmod 666 $baseDir/files/twi_from_67.json && " +
+                    "chown --reference=$baseDir/files $baseDir/files/custom_s.txt 2>/dev/null && " +
+                    "chown --reference=$baseDir/files $baseDir/files/twi_from_67.json 2>/dev/null && " +
+                    "restorecon $baseDir/files/custom_s.txt 2>/dev/null && " +
+                    "restorecon $baseDir/files/twi_from_67.json 2>/dev/null; fi")
+        }
 
         return execRoot(*cmds.toTypedArray())
     }

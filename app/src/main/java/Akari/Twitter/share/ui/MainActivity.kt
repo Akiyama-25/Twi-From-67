@@ -172,6 +172,20 @@ class MainActivity : AppCompatActivity() {
         binding.chipWebEmail.isChecked = (value == "17")
     }
 
+    private fun broadcastConfigUpdate(customS: String, isEnabled: Boolean, cleanTracking: Boolean) {
+        try {
+            for (pkg in listOf(SuHelper.TWITTER_PKG, SuHelper.TWITTER_LITE_PKG)) {
+                val intent = Intent(SuHelper.ACTION_UPDATE_CONFIG).apply {
+                    setPackage(pkg)
+                    putExtra("custom_s", customS)
+                    putExtra("is_enabled", isEnabled)
+                    putExtra("clean_tracking", cleanTracking)
+                }
+                sendBroadcast(intent)
+            }
+        } catch (_: Throwable) {}
+    }
+
     private fun saveConfiguration() {
         val rawInput = binding.editCustomS.text?.toString()?.trim() ?: ""
         val sanitized = DigitConverter.sanitizeDigits(rawInput)
@@ -193,6 +207,12 @@ class MainActivity : AppCompatActivity() {
         PrefManager.setCustomS(this, finalVal)
         highlightMatchingChip(finalVal)
 
+        val isEnabled = PrefManager.isEnabled(this)
+        val cleanTracking = PrefManager.isCleanTracking(this)
+
+        // Send runtime Broadcast IPC directly into Twitter process
+        broadcastConfigUpdate(finalVal, isEnabled, cleanTracking)
+
         // Secret Easter Egg Requirement:
         // When user enters a value containing consecutive "67" and saves, show Toast "67676767".
         if (DigitConverter.shouldTriggerEasterEgg(finalVal)) {
@@ -208,11 +228,21 @@ class MainActivity : AppCompatActivity() {
 
         binding.switchEnableHook.setOnCheckedChangeListener { _, isChecked ->
             PrefManager.setEnabled(this, isChecked)
+            broadcastConfigUpdate(
+                PrefManager.getCustomS(this),
+                isChecked,
+                binding.switchCleanTracking.isChecked
+            )
             updateLiveTestPreview()
         }
 
         binding.switchCleanTracking.setOnCheckedChangeListener { _, isChecked ->
             PrefManager.setCleanTracking(this, isChecked)
+            broadcastConfigUpdate(
+                PrefManager.getCustomS(this),
+                binding.switchEnableHook.isChecked,
+                isChecked
+            )
             updateLiveTestPreview()
         }
     }
