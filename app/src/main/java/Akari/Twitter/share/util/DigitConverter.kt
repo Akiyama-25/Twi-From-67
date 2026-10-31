@@ -35,6 +35,13 @@ object DigitConverter {
         return input.isNotEmpty() && input.all { it in '0'..'9' }
     }
 
+    /**
+     * Checks if the value contains consecutive "67" to trigger the easter egg.
+     */
+    fun shouldTriggerEasterEgg(input: String): Boolean {
+        return input.contains(EASTER_EGG_VALUE)
+    }
+
     // Backward compatibility aliases
     fun sanitizeToTwoDigits(input: CharSequence?): String = sanitizeDigits(input)
     fun isValidTwoDigits(input: String): Boolean = isValidDigits(input)

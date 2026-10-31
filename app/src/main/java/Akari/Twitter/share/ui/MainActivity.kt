@@ -170,8 +170,8 @@ class MainActivity : AppCompatActivity() {
         highlightMatchingChip(finalVal)
 
         // Secret Easter Egg Requirement:
-        // When user enters 67 and saves, show Toast "67676767".
-        if (finalVal == DigitConverter.EASTER_EGG_VALUE) {
+        // When user enters a value containing consecutive "67" and saves, show Toast "67676767".
+        if (DigitConverter.shouldTriggerEasterEgg(finalVal)) {
             Toast.makeText(this, DigitConverter.EASTER_EGG_TOAST, Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, getString(R.string.msg_saved_success), Toast.LENGTH_SHORT).show()

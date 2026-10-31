@@ -41,4 +41,18 @@ class DigitConverterTest {
         assertFalse(DigitConverter.isValidDigits(""))
         assertFalse(DigitConverter.isValidDigits("6a"))
     }
+
+    @Test
+    fun testEasterEggTrigger() {
+        assertTrue(DigitConverter.shouldTriggerEasterEgg("67"))
+        assertTrue(DigitConverter.shouldTriggerEasterEgg("167"))
+        assertTrue(DigitConverter.shouldTriggerEasterEgg("670"))
+        assertTrue(DigitConverter.shouldTriggerEasterEgg("1236789"))
+        assertTrue(DigitConverter.shouldTriggerEasterEgg("667"))
+        assertFalse(DigitConverter.shouldTriggerEasterEgg("76"))
+        assertFalse(DigitConverter.shouldTriggerEasterEgg("607"))
+        assertFalse(DigitConverter.shouldTriggerEasterEgg("6"))
+        assertFalse(DigitConverter.shouldTriggerEasterEgg("7"))
+        assertFalse(DigitConverter.shouldTriggerEasterEgg(""))
+    }
 }
