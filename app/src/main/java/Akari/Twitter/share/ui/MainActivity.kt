@@ -234,6 +234,7 @@ class MainActivity : AppCompatActivity() {
         val displayName = when (currentLang) {
             LocaleHelper.LANG_ZH_HANS -> getString(R.string.lang_zh_hans)
             LocaleHelper.LANG_ZH_HANT -> getString(R.string.lang_zh_hant)
+            LocaleHelper.LANG_YUE -> getString(R.string.lang_yue)
             LocaleHelper.LANG_EN -> getString(R.string.lang_en)
             LocaleHelper.LANG_JA -> getString(R.string.lang_ja)
             else -> getString(R.string.lang_system)
@@ -246,6 +247,7 @@ class MainActivity : AppCompatActivity() {
             LocaleHelper.LANG_SYSTEM,
             LocaleHelper.LANG_ZH_HANS,
             LocaleHelper.LANG_ZH_HANT,
+            LocaleHelper.LANG_YUE,
             LocaleHelper.LANG_EN,
             LocaleHelper.LANG_JA
         )
@@ -254,6 +256,7 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.lang_system),
             getString(R.string.lang_zh_hans),
             getString(R.string.lang_zh_hant),
+            getString(R.string.lang_yue),
             getString(R.string.lang_en),
             getString(R.string.lang_ja)
         )

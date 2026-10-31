@@ -5,7 +5,7 @@
 [![LSPosed](https://img.shields.io/badge/LSPosed%20API-101%2F102-orange.svg)](https://github.com/LSPosed/LSPosed)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[English](#english) | [简体中文](#简体中文) | [繁體中文](#繁體中文) | [日本語](#日本語)
+[English](#english) | [简体中文](#简体中文) | [繁體中文](#繁體中文) | [粵語](#粵語) | [日本語](#日本語)
 
 ---
 
@@ -104,6 +104,34 @@ In X (Twitter) version 12.36+, tweet share URLs append client source tracking pa
 - **多語系即時熱更新**：支援簡體中文、繁體中文、英文與日文，切換語言後即時重載無須重啟。
 - **即時模擬測試**：內建貼文連結轉換測試器，隨打即見轉換結果。
 - **GitHub Actions 自動化簽名發布**：參考 [TsukimiBox](https://github.com/Akiyama-25/TsukimiBox) 工作流程，自動建立並驗證簽名產物。
+
+---
+
+## 粵語
+
+### 概述
+喺 12.36+ / 12.37+ 版本嘅 X（Twitter）入面，無論你係「撳掣複製 Link」定係「分享貼文」，個 App 都會自把自為喺 Link 尾尾追加一抽來源識別尾巴（例如 `?a=ZRipCP_Wn-MjXIXrZpU&s=19`，入面嘅 19 就係代表 Android 裝置）。
+
+**Twi From 67** 係一個超級現代化嘅 LSPosed（API 101/102）模組，等你可以自己話事，隨心所欲自定貼文分享連結入面嘅 `?s=` 來源識別數字，仲可以順手幫你踢走晒多餘嘅追蹤尾巴，令條 Link 乾淨爽快！
+
+### 核心正嘢
+- **隨心自定分享來源代碼**：想改乜數字就改乜數字，完全聽你指揮。
+- **智能防呆與全形轉換**：最多只准入兩位數字，兼且只認阿拉伯數字；就算手快入咗全形數字（`０`–`９`），都會自動幫你變返正經半形（`0`–`9`）。
+- **常見裝置即揀即用（快捷預設）**：
+  - `46`：iPhone 版 X App
+  - `19`：Android 友
+  - `20`：電腦網頁版按複製連結
+  - `21`：新版網頁介面
+  - `12`：iPhone 系統分享
+  - `17`：電腦網頁用 Email 分享
+- **一掣踢走追蹤尾巴**：可自由開關過濾 `?a=...` 呢啲煩人追蹤參數，保持連結乾淨利落。
+- **Material 3 Expressive (M3E)**：緊跟 Google 最新 M3 Expressive 設計美學，大圓角流線卡片配合舒服層次感。
+- **動態色彩 (Monet)**：支援 Android 12+ 系統桌布動態取色，成個介面跟住你部機變色。
+- **AOSP 預見性返回手勢**：完美適配 Android 系統返回手勢動畫預覽。
+- **全面沉浸式全螢幕**：全線支援 Edge-to-edge，貼心避開狀態列、手勢導覽列同埋個相機挖孔。
+- **多語系即時熱更換**：內置簡體中文、繁體中文、粵語（富有粵韻）、英文同埋日文，換完即刻見效，連 App 都唔使重啟。
+- **即場模擬試玩工具**：自帶推文 Link 轉換預覽框，隨手貼 Link 實時睇到轉出嚟係點，仲可以一鍵 Copy。
+- **GitHub Actions 自動化簽名發布**：參考 [TsukimiBox](https://github.com/Akiyama-25/TsukimiBox) 嘅 CI 工作流，全自動生成持久化 Release 簽名密鑰庫。
 
 ---
 

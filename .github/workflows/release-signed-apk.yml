@@ -33,10 +33,6 @@ on:
         required: false
         default: true
         type: boolean
-  push:
-    tags:
-      - 'v*'
-      - 'release-*'
 
 permissions:
   contents: write
