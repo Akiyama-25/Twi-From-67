@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Twi From 67</string>
+    <string name="xposed_description">X (Twitter) 12.36+ のツイート共有リンクに付加される共有元パラメータ（?s=）をカスタマイズする最新LSPosedモジュール</string>
+
+    <!-- Status -->
+    <string name="status_active">LSPosed 有効</string>
+    <string name="status_inactive">モジュール無効（LSPosedで有効化してXを再起動してください）</string>
+
+    <!-- Parameter Config -->
+    <string name="section_param_title">共有元パラメータ (?s=)</string>
+    <string name="section_param_desc">ツイート共有リンクの末尾に追加される共有元識別数値を設定します</string>
+    <string name="hint_custom_s">1〜2桁のアラビア数字（例：67, 19, 46）</string>
+    <string name="btn_save">設定を保存</string>
+    <string name="msg_saved_success">設定を保存しました</string>
+    <string name="err_invalid_number">有効な1〜2桁のアラビア数字を入力してください</string>
+
+    <!-- Presets -->
+    <string name="presets_title">クイックプリセット</string>
+    <string name="preset_iphone_app">iPhone X App (46)</string>
+    <string name="preset_android">Android (19)</string>
+    <string name="preset_web_copy">Web版リンクコピー (20)</string>
+    <string name="preset_web_new">新Web UI (21)</string>
+    <string name="preset_iphone_sys">iPhone 共有シート (12)</string>
+    <string name="preset_web_email">Web版 メール共有 (17)</string>
+
+    <!-- Options -->
+    <string name="section_options_title">機能設定</string>
+    <string name="switch_enable">フックを有効化</string>
+    <string name="switch_enable_desc">X内のクリップボードコピーおよび共有Intentを傍受して?s=を書き換えます</string>
+    <string name="switch_clean">余分な追跡パラメータを削除</string>
+    <string name="switch_clean_desc">?a= などの識別トラッキングパラメータを除去し、クリーンなリンクを維持します</string>
+
+    <!-- Live Test -->
+    <string name="section_test_title">リアルタイムプレビュー &amp; テスト</string>
+    <string name="section_test_desc">ツイートリンクを入力し、変換結果をリアルタイムで確認できます</string>
+    <string name="test_input_hint">ツイートのURLを入力または貼り付け</string>
+    <string name="btn_sample_url">サンプル入力</string>
+    <string name="label_result">変換後のリンク：</string>
+    <string name="btn_copy_result">結果をコピー</string>
+    <string name="msg_copied">クリップボードにコピーしました</string>
+
+    <!-- Language & Hot Update -->
+    <string name="section_lang_title">表示言語 / Language</string>
+    <string name="section_lang_desc">アプリの表示言語を選択（ホットリロードで即時反映）</string>
+    <string name="dialog_select_language">言語を選択</string>
+    <string name="lang_system">システムに従う</string>
+    <string name="lang_zh_hans">簡体中国語</string>
+    <string name="lang_zh_hant">繁体中国語</string>
+    <string name="lang_en">英語</string>
+    <string name="lang_ja">日本語</string>
+
+    <!-- About -->
+    <string name="section_about_title">アプリについて</string>
+    <string name="about_app_desc">Material 3 Expressive 設計に準拠したモダンな LSPosed モジュール。X (Twitter) 12.36+ の共有リンクを自由自在にカスタマイズします。</string>
+    <string name="about_target_app">対象アプリ：com.twitter.android (12.36+)</string>
+    <string name="about_sdk_info">TargetSDK: 37 | LSPosed API: 101/102</string>
+    <string name="about_version">バージョン：release-1</string>
+    <string name="about_author">作者：Akari (@Akiyama-25)</string>
+    <string name="about_github">GitHub リポジトリ</string>
+</resources>

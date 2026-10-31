@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Twi From 67</string>
+    <string name="xposed_description">Modern LSPosed module to customize the "?s=" share source parameter in X (Twitter) 12.36+</string>
+
+    <!-- Status -->
+    <string name="status_active">LSPosed Active</string>
+    <string name="status_inactive">LSPosed Inactive (Enable module &amp; restart X)</string>
+
+    <!-- Parameter Config -->
+    <string name="section_param_title">Share Source Parameter (?s=)</string>
+    <string name="section_param_desc">Customize the source identification number appended to tweet share links</string>
+    <string name="hint_custom_s">1-2 digits (e.g. 67, 19, 46)</string>
+    <string name="btn_save">Save Settings</string>
+    <string name="msg_saved_success">Settings saved successfully</string>
+    <string name="err_invalid_number">Please enter a valid 1 or 2 digit Arabic number</string>
+
+    <!-- Presets -->
+    <string name="presets_title">Quick Presets</string>
+    <string name="preset_iphone_app">iPhone App (46)</string>
+    <string name="preset_android">Android (19)</string>
+    <string name="preset_web_copy">Web Copy Link (20)</string>
+    <string name="preset_web_new">New Web UI (21)</string>
+    <string name="preset_iphone_sys">iPhone System (12)</string>
+    <string name="preset_web_email">Web Email (17)</string>
+
+    <!-- Options -->
+    <string name="section_options_title">Options</string>
+    <string name="switch_enable">Enable Hook</string>
+    <string name="switch_enable_desc">Intercept clipboard and share intents in X</string>
+    <string name="switch_clean">Strip Tracking Parameters</string>
+    <string name="switch_clean_desc">Remove extra parameters (e.g. ?a=...) and keep clean links</string>
+
+    <!-- Live Test -->
+    <string name="section_test_title">Live Simulation &amp; Test</string>
+    <string name="section_test_desc">Verify how tweet links will be rewritten in real-time</string>
+    <string name="test_input_hint">Enter or paste a tweet URL</string>
+    <string name="btn_sample_url">Sample</string>
+    <string name="label_result">Rewritten Result:</string>
+    <string name="btn_copy_result">Copy</string>
+    <string name="msg_copied">Copied to clipboard</string>
+
+    <!-- Language & Hot Update -->
+    <string name="section_lang_title">Language / 言語</string>
+    <string name="section_lang_desc">Select display language (instant hot update supported)</string>
+    <string name="dialog_select_language">Select Language</string>
+    <string name="lang_system">Follow System</string>
+    <string name="lang_zh_hans">简体中文</string>
+    <string name="lang_zh_hant">繁體中文</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ja">日本語</string>
+
+    <!-- About -->
+    <string name="section_about_title">About</string>
+    <string name="about_app_desc">Modern Material 3 Expressive LSPosed module designed for X (Twitter) 12.36+ share link customization.</string>
+    <string name="about_target_app">Target: com.twitter.android (12.36+)</string>
+    <string name="about_sdk_info">TargetSDK: 37 | LSPosed API: 101/102</string>
+    <string name="about_version">Version: release-1</string>
+    <string name="about_author">Author: Akari (@Akiyama-25)</string>
+    <string name="about_github">GitHub Repository</string>
+</resources>

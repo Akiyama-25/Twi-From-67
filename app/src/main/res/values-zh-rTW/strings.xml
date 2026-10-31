@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Twi From 67</string>
+    <string name="xposed_description">現代化的 LSPosed 模組，用於自訂 X (Twitter) 12.36+ 推文分享來源參數（?s=）</string>
+
+    <!-- Status -->
+    <string name="status_active">LSPosed 模組已啟用</string>
+    <string name="status_inactive">模組未啟用（請在 LSPosed 中勾選並重啟 X）</string>
+
+    <!-- Parameter Config -->
+    <string name="section_param_title">分享來源參數 (?s=)</string>
+    <string name="section_param_desc">自訂推文分享連結末尾追加的來源識別代號（數字）</string>
+    <string name="hint_custom_s">1-2 位阿拉伯數字（如 67、19、46）</string>
+    <string name="btn_save">儲存設定</string>
+    <string name="msg_saved_success">設定已儲存</string>
+    <string name="err_invalid_number">請輸入有效的 1-2 位阿拉伯數字</string>
+
+    <!-- Presets -->
+    <string name="presets_title">快捷預設</string>
+    <string name="preset_iphone_app">iPhone 上的 X App (46)</string>
+    <string name="preset_android">Android (19)</string>
+    <string name="preset_web_copy">電腦網頁版按複製連結 (20)</string>
+    <string name="preset_web_new">新版網頁介面 (21)</string>
+    <string name="preset_iphone_sys">iPhone 系統分享 (12)</string>
+    <string name="preset_web_email">電腦網頁用 Email 分享 (17)</string>
+
+    <!-- Options -->
+    <string name="section_options_title">功能選項</string>
+    <string name="switch_enable">啟用連結攔截</string>
+    <string name="switch_enable_desc">攔截 X 內的剪貼簿複製及系統分享並修改 ?s= 參數</string>
+    <string name="switch_clean">清理多餘追蹤參數</string>
+    <string name="switch_clean_desc">移除 ?a= 等追蹤識別後綴，保持推文連結乾淨整潔</string>
+
+    <!-- Live Test -->
+    <string name="section_test_title">即時模擬與測試</string>
+    <string name="section_test_desc">輸入推文分享連結，即時預覽轉換後的結果</string>
+    <string name="test_input_hint">輸入或貼上推文連結</string>
+    <string name="btn_sample_url">填入範例</string>
+    <string name="label_result">轉換結果：</string>
+    <string name="btn_copy_result">複製結果</string>
+    <string name="msg_copied">已複製到剪貼簿</string>
+
+    <!-- Language & Hot Update -->
+    <string name="section_lang_title">介面語言</string>
+    <string name="section_lang_desc">選擇應用顯示語言（支援熱更新即時生效）</string>
+    <string name="dialog_select_language">選擇語言</string>
+    <string name="lang_system">跟隨系統</string>
+    <string name="lang_zh_hans">簡體中文</string>
+    <string name="lang_zh_hant">繁體中文</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ja">日本語</string>
+
+    <!-- About -->
+    <string name="section_about_title">關於模組</string>
+    <string name="about_app_desc">基於 Material 3 Expressive 設計規範的現代化 LSPosed 模組，深度適配 X (Twitter) 12.36+ 分享行為。</string>
+    <string name="about_target_app">目標應用：com.twitter.android (12.36+)</string>
+    <string name="about_sdk_info">TargetSDK: 37 | LSPosed API: 101/102</string>
+    <string name="about_version">版本：release-1</string>
+    <string name="about_author">作者：Akari (@Akiyama-25)</string>
+    <string name="about_github">GitHub 開源倉庫</string>
+</resources>
