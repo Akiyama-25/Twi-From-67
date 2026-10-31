@@ -9,6 +9,13 @@
 
 ---
 
+> [!TIP]
+> - 本项目README由AI翻译，未必准确
+> - The README is translated by AI, I can't promise that it's correct.
+> - この「README」はAIて翻訳です、誤っている可能性があります
+
+---
+
 ## English
 
 ### Overview
