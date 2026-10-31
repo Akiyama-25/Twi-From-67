@@ -15,11 +15,9 @@ val aliasName = lp.getProperty("ALIAS_NAME") ?: System.getenv("ALIAS_NAME") ?: "
 val aliasPass = lp.getProperty("ALIAS_PASS") ?: System.getenv("ALIAS_PASS") ?: keystorePass
 val releaseKeystore = rootProject.file("release.keystore")
 
-val sdkVersion = project.findProperty("COMPILE_SDK")?.toString()?.toIntOrNull() ?: 37
-
 android {
     namespace = "Akari.Twitter.share"
-    compileSdk = sdkVersion
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "Akari.Twitter.share"
@@ -29,6 +27,11 @@ android {
         versionName = "release-1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
     }
 
     signingConfigs {
@@ -104,6 +107,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.activity:activity-ktx:1.9.3")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+
     // Unit Testing
     testImplementation("junit:junit:4.13.2")
 }

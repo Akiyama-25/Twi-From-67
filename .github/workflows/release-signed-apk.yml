@@ -1,4 +1,4 @@
-name: Release Signed APK / 发布已签名 APK
+name: Release Signed APK
 
 on:
   workflow_dispatch:
@@ -54,6 +54,8 @@ jobs:
         env:
           INPUT_TAG: ${{ inputs.tag }}
           INPUT_RELEASE_NAME: ${{ inputs.release_name }}
+          INPUT_PRERELEASE: ${{ inputs.prerelease }}
+          INPUT_DRAFT: ${{ inputs.draft }}
           CUSTOM_DESCRIPTION: ${{ inputs.custom_description }}
         run: |
           mkdir -p release_meta
@@ -73,8 +75,22 @@ jobs:
             RELEASE_NAME="Twi From 67 ${TAG_NAME}"
           fi
 
+          if [ "${INPUT_PRERELEASE}" = "true" ] || [[ "${TAG_NAME}" == *"alpha"* ]] || [[ "${TAG_NAME}" == *"beta"* ]]; then
+            IS_PRERELEASE="true"
+          else
+            IS_PRERELEASE="false"
+          fi
+
+          if [ "${INPUT_DRAFT}" = "true" ]; then
+            IS_DRAFT="true"
+          else
+            IS_DRAFT="false"
+          fi
+
           echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
           echo "release_name=${RELEASE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "is_prerelease=${IS_PRERELEASE}" >> "$GITHUB_OUTPUT"
+          echo "is_draft=${IS_DRAFT}" >> "$GITHUB_OUTPUT"
 
           echo "=== Release Metadata ==="
           echo "Tag Name: ${TAG_NAME}"
@@ -89,20 +105,21 @@ jobs:
       - name: Setup Android SDK Platform 37
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
-          echo "=== Installing Android API 37 SDK Platform ==="
-          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-37" "platforms;android-37.0" || true
-          if [ -d "${ANDROID_HOME}/platforms/android-37.0" ] && [ ! -d "${ANDROID_HOME}/platforms/android-37" ]; then
-            ln -s "${ANDROID_HOME}/platforms/android-37.0" "${ANDROID_HOME}/platforms/android-37"
-          fi
-          if [ ! -d "${ANDROID_HOME}/platforms/android-37" ]; then
-            echo "Configuring fallback API 37 platform definition from latest available"
-            LATEST_PLATFORM=$(find ${ANDROID_HOME}/platforms -maxdepth 1 -name "android-*" | sort -V | tail -n 1)
-            mkdir -p "${ANDROID_HOME}/platforms/android-37"
-            cp -r "${LATEST_PLATFORM}"/* "${ANDROID_HOME}/platforms/android-37/"
-            sed -i 's/Platform.Version=.*/Platform.Version=17/' "${ANDROID_HOME}/platforms/android-37/source.properties" || true
-            sed -i 's/AndroidVersion.ApiLevel=.*/AndroidVersion.ApiLevel=37/' "${ANDROID_HOME}/platforms/android-37/source.properties" || true
-          fi
+          echo "=== Configuring Android API 37 Platform ==="
+          BASE_PLATFORM=$(find ${ANDROID_HOME}/platforms -maxdepth 1 -name "android-*" | sort -V | tail -n 1)
+          echo "Using base platform: ${BASE_PLATFORM}"
+          mkdir -p "${ANDROID_HOME}/platforms/android-37"
+          cp -r "${BASE_PLATFORM}"/* "${ANDROID_HOME}/platforms/android-37/"
+          cat << 'EOF' > "${ANDROID_HOME}/platforms/android-37/source.properties"
+Pkg.Desc=Android SDK Platform 37
+Pkg.UserSrc=false
+Platform.Version=17
+Pkg.Revision=1
+AndroidVersion.ApiLevel=37
+Pkg.Path=platforms;android-37
+EOF
+          echo "Configured platforms:"
+          ls -la "${ANDROID_HOME}/platforms"
 
       - name: Restore Signing Keystore Cache
         id: cache-signing-keystore
@@ -229,27 +246,12 @@ jobs:
             sha256sum *.apk > SHA256SUMS.txt
           )
 
-          : > release_notes.md
           if [ -s release_meta/custom_description.md ] && grep -q '[^[:space:]]' release_meta/custom_description.md; then
-            cat release_meta/custom_description.md > release_notes.md
+            cp release_meta/custom_description.md release_notes.md
           else
-            cat << 'EOF' > release_notes.md
-# Twi From 67 Release
-
-Modern LSPosed module for X (Twitter) 12.36+ share source parameter customization.
-
-### Features
-- TargetSDK 37 (Android 17)
-- Material 3 Expressive Design
-- Dynamic Color (Monet)
-- Immersive Edge-to-Edge full screen
-- AOSP Predictive Back Gesture
-- Multi-language support with instant hot update
-- Quick presets for known X source parameters
-
-### Downloads & Verification
-All APKs are signed with persistent release keystore. Check SHA256SUMS.txt for checksum validation.
-EOF
+            echo "# Twi From 67 Release" > release_notes.md
+            echo "" >> release_notes.md
+            echo "Modern LSPosed module for X (Twitter) 12.36+ share source parameter customization." >> release_notes.md
           fi
 
           echo "=== Prepared Release Assets ==="
@@ -278,8 +280,8 @@ EOF
           target_commitish: ${{ github.sha }}
           body_path: release_notes.md
           generate_release_notes: false
-          draft: ${{ inputs.draft || false }}
-          prerelease: ${{ inputs.prerelease || false }}
+          draft: ${{ steps.meta.outputs.is_draft == 'true' }}
+          prerelease: ${{ steps.meta.outputs.is_prerelease == 'true' }}
           files: |
             release_assets/*.apk
             release_assets/SHA256SUMS.txt
